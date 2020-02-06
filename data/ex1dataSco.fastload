@@ -1,0 +1,146 @@
+/******************************************************************************/
+/* The contents of this file are Teradata Public Content                      */
+/* and have been released to the Public Domain.                               */
+/* Licensed under BSD; see "license.txt" file for more information.           */
+/* Copyright (c) 2020 by Teradata                                             */
+/******************************************************************************/
+/*                                                                            */
+/* R And Python Analytics with the SCRIPT Table Operator                      */
+/* Orange Book supplementary material                                         */
+/* Alexander Kolovos - January 2020 - v.2.0                                   */
+/*                                                                            */
+/* Example 1: Scoring                                                         */
+/* File     : ex1dataSco.fastload                                             */
+/*                                                                            */
+/* Script to upload the Example 1 input data from ex1dataSco.csv              */
+/* to a target Vantage SQL Engine database with the Fastload utility.         */
+/*                                                                            */
+/* Prior to running the script, replace the following fields with information */
+/*   <IPADDRESS> with the IP address or domain name of the target system      */
+/*         <UID> with your database user ID on the target SQL Engine          */
+/*         <PWD> with your database user password on the target SQL Engine    */
+/* From cmd prompt of a system equipped with the Fastload utility, run:       */
+/*   fastload < <NAME_OF_THIS_FILE>                                           */
+/*                                                                            */
+/******************************************************************************/
+
+sessions 4;
+errlimit 25;
+/* Specify correct machine and user credentials */
+/*logon <IPADDRESS>/<UID>,<PWD>;*/
+logon tdap2069t1.labs.teradata.com/me,me;
+DATABASE myDB;
+
+/* To avoid errors, drop table if it already exists in the database */
+/* DROP TABLE ex1tblSco; */
+
+/* If a column has multiple instances of a value, same values can be distributed
+   to the same AMP with a NUPI. Row distribution is less uniform or skewed.   */
+
+CREATE MULTISET TABLE ex1tblSco, FALLBACK,
+     NO BEFORE JOURNAL,
+     NO AFTER JOURNAL,
+     CHECKSUM = DEFAULT,
+     DEFAULT MERGEBLOCKRATIO
+     (
+      cust_id INTEGER,
+      tot_income DECIMAL(15,1),
+      tot_age INTEGER,
+      tot_cust_years INTEGER,
+      tot_children INTEGER,
+      female_ind INTEGER,
+      single_ind INTEGER,
+      married_ind INTEGER,
+      separated_ind INTEGER,
+      ca_resident_ind INTEGER,
+      ny_resident_ind INTEGER,
+      tx_resident_ind INTEGER,
+      il_resident_ind INTEGER,
+      az_resident_ind INTEGER,
+      oh_resident_ind INTEGER,
+      ck_acct_ind INTEGER,
+      sv_acct_ind INTEGER,
+      cc_acct_ind INTEGER,
+      ck_avg_bal FLOAT,
+      sv_avg_bal FLOAT,
+      cc_avg_bal FLOAT,
+      ck_avg_tran_amt FLOAT,
+      sv_avg_tran_amt FLOAT,
+      cc_avg_tran_amt FLOAT,
+      q1_trans_cnt INTEGER,
+      q2_trans_cnt INTEGER,
+      q3_trans_cnt INTEGER,
+      q4_trans_cnt INTEGER)
+PRIMARY INDEX (cust_id);
+
+SET RECORD VARTEXT ",";
+
+RECORD 2;    /* Start at n-th row in file */
+
+DEFINE
+Col1 (VARCHAR(30)),
+Col2 (VARCHAR(30)),
+Col3 (VARCHAR(30)),
+Col4 (VARCHAR(30)),
+Col5 (VARCHAR(30)),
+Col6 (VARCHAR(30)),
+Col7 (VARCHAR(30)),
+Col8 (VARCHAR(30)),
+Col9 (VARCHAR(30)),
+Col10 (VARCHAR(30)),
+Col11 (VARCHAR(30)),
+Col12 (VARCHAR(30)),
+Col13 (VARCHAR(30)),
+Col14 (VARCHAR(30)),
+Col15 (VARCHAR(30)),
+Col16 (VARCHAR(30)),
+Col17 (VARCHAR(30)),
+Col18 (VARCHAR(30)),
+Col19 (VARCHAR(30)),
+Col20 (VARCHAR(30)),
+Col21 (VARCHAR(30)),
+Col22 (VARCHAR(30)),
+Col23 (VARCHAR(30)),
+Col24 (VARCHAR(30)),
+Col25 (VARCHAR(30)),
+Col26 (VARCHAR(30)),
+Col27 (VARCHAR(30)),
+Col28 (VARCHAR(30))
+FILE=ex1dataSco.csv;
+
+SHOW;
+
+begin loading myDB.ex1tblSco errorfiles myDB.ex1tblSco_error_1, myDB.ex1tblSco_error_2;
+insert into myDB.ex1tblSco (
+:Col1,
+:Col2,
+:Col3,
+:Col4,
+:Col5,
+:Col6,
+:Col7,
+:Col8,
+:Col9,
+:Col10,
+:Col11,
+:Col12,
+:Col13,
+:Col14,
+:Col15,
+:Col16,
+:Col17,
+:Col18,
+:Col19,
+:Col20,
+:Col21,
+:Col22,
+:Col23,
+:Col24,
+:Col25,
+:Col26,
+:Col27,
+:Col28);
+
+END LOADING;
+
+LOGOFF;

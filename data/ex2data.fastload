@@ -1,0 +1,73 @@
+/******************************************************************************/
+/* The contents of this file are Teradata Public Content                      */
+/* and have been released to the Public Domain.                               */
+/* Licensed under BSD; see "license.txt" file for more information.           */
+/* Copyright (c) 2020 by Teradata                                             */
+/******************************************************************************/
+/*                                                                            */
+/* R And Python Analytics with the SCRIPT Table Operator                      */
+/* Orange Book supplementary material                                         */
+/* Alexander Kolovos - January 2020 - v.2.0                                   */
+/*                                                                            */
+/* Example 2: Clustering                                                      */
+/* File     : ex2data.fastload                                                */
+/*                                                                            */
+/* Script to upload the Example 2 input data form ex2data.csv                 */
+/* to a target Vantage SQL Engine database with the Fastload utility.         */
+/*                                                                            */
+/* Prior to running the script, replace the following fields with information */
+/*   <IPADDRESS> with the IP address or domain name of the target system      */
+/*         <UID> with your database user ID on the target SQL Engine          */
+/*         <PWD> with your database user password on the target SQL Engine    */
+/* From cmd prompt of a system equipped with the Fastload utility, run:       */
+/*   fastload < <NAME_OF_THIS_FILE>                                           */
+/*                                                                            */
+/******************************************************************************/
+
+sessions 4;
+errlimit 25;
+/* Specify correct machine and user credentials */
+/*logon <IPADDRESS>/<UID>,<PWD>;*/
+logon tdap2069t1.labs.teradata.com/me,me;
+DATABASE myDB;
+
+/* To avoid errors, drop table if it already exists in the database */
+/* DROP TABLE ex2tbl; */
+
+/* If a column has multiple instances of a value, same values can be distributed
+   to the same AMP with a NUPI. Row distribution is less uniform or skewed.   */
+
+CREATE MULTISET TABLE ex2tbl, NO FALLBACK,
+     NO BEFORE JOURNAL,
+     NO AFTER JOURNAL,
+     CHECKSUM = DEFAULT,
+     DEFAULT MERGEBLOCKRATIO
+     (ObsID integer,
+      X_Coord float,
+      Y_Coord float,
+      ObsGroup integer)
+PRIMARY INDEX(ObsGroup);
+
+SET RECORD VARTEXT ",";
+
+RECORD 1;    /* Start at n-th row in file */
+
+DEFINE
+Col1 (VARCHAR(10)),
+Col2 (VARCHAR(20)),
+Col3 (VARCHAR(20)),
+Col4 (VARCHAR(10))
+FILE=ex2data.csv;
+
+SHOW;
+
+begin loading myDB.ex2tbl errorfiles myDB.ex2tbl_error_1, myDB.ex2tbl_error_2;
+insert into myDB.ex2tbl (
+:Col1,
+:Col2,
+:Col3,
+:Col4);
+
+END LOADING;
+
+LOGOFF;
