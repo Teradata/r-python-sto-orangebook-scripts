@@ -1,6 +1,6 @@
 R And Python Analytics with the SCRIPT Table Operator
 Orange Book supplementary material
-Alexander Kolovos - January 2020 - v.2.0
+Alexander Kolovos - February 2020 - v.2.0
 
 -------------------------------------------------------------------------------
 
@@ -115,10 +115,10 @@ Version 2.0: (20 Jan 2020)
 * Transitioned Python code from Python 2 into Python 3
 * Now using Fastload scripts and CSV data files throughout to load example
   data to target systems.
-* Examples 2 and 4 of past version have been removed.
-* Example 3 of past version has been updated to use Python add-ons that are
-  still actively supported.
-* Examples 1 and 3 of past version have been expanded to include scripts for
+* Examples 2 and 4 of version 1.x have been removed.
+* Example 3 of version 1.x has been updated to use Python add-ons that are
+  currently actively supported.
+* Examples 1 and 3 of version 1.x have been expanded to include scripts for
   both R and Python.
 * Examples 1 and 3 have been further expanded to include versions where data
   are read in chunks iteratively, for both R and Python.
