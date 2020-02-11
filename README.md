@@ -22,7 +22,7 @@ The present package comprises of the following folders and files. See the README
 * README.txt
 * license.txt
 * bin/
-    + tdStoMemInspect.sh
+    + tdstoMemInspect.sh
 * data/
     * ex1dataprep/
         + ex1dataFit.csv
