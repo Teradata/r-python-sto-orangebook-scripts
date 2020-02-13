@@ -1,4 +1,4 @@
-R And Python Analytics with the SCRIPT Table Operator
+R And Python Analytics with SCRIPT Table Operator
 Orange Book supplementary material
 Alexander Kolovos - February 2020 - v.2.0
 
@@ -16,7 +16,7 @@ Copyright (c) 2020 by Teradata
 Information
 
 The present package is a collection of data, SQL, R and Python scripts to use
-with the Orange Book "R And Python Analytics with the SCRIPT Table Operator".
+with the Orange Book "R And Python Analytics with SCRIPT Table Operator".
 The data and scripts implement the examples presented in this Orange Book.
 The material provided has been based on research done on Vantage SQL Engine
 Version 16.20 systems installed on the SUSE Linux Enterprise Server 12 Service 

@@ -5,9 +5,9 @@
 # Copyright (c) 2020 by Teradata
 ################################################################################
 #
-# R And Python Analytics with the SCRIPT Table Operator
+# R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - January 2020 - v.2.0
+# Alexander Kolovos - February 2020 - v.2.0
 #
 # Example 1: Scoring (Python version)
 # File     : ex1pSco.py
