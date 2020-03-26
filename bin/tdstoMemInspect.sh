@@ -7,27 +7,28 @@
 # Copyright (c) 2020 by Teradata
 ################################################################################
 #
-# R And Python Analytics with SCRIPT Table Operator
+# R And Python Analytics with the SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - January 2020
+# Alexander Kolovos - March 2020
 #
 # tdstoMemInspect: SCRIPT Table Operator memory inspection
-# Script version: 0.6 - 2020-01-23
+# Script version: 0.7 - 2020-03-25
 #
 # Bash script to probe a Vantage SQL Engine node for
-# 1. the SCRIPT TO upper memory threshold setting, based on the system's
+# 1. the existing SCRIPT TO upper memory threshold setting, based on the system's
 #    ScriptMemLimit value in the cufconfig Globally Distributed Object utility.
-# 2. memory availability, after accounting for the database needs.
+# 2. memory availability for non-database tasks like script execution via the 
+#    SCRIPT and ExecR TOs, after accounting for the database needs.
 # This script should be executed on a SQL Engine node of a Vantage
 # system by a user with administrative rights.
 #
-# The ScriptMemLimit is a system setting in the cufconfig utility
-# that determines the upper limit for the memory per AMP and per 
-# SCRIPT TO query to be made available for SCRIPT TO users. If the memory
-# demands during a SCRIPT TO execution exceed this threshold, then
-# the query is aborted. However, if the system memory resources get
-# depleted in the process before the ScriptMemLimit is reached,
-# then the server can crash.
+# The ScriptMemLimit is a system setting in the cufconfig utility that
+# determines the upper limit for the memory per AMP and per SCRIPT TO query
+# to be made available for SCRIPT TO users. If memory demands during execution
+# of the SCRIPT TO exceed this threshold, then the query is aborted. However,
+# if the system memory resources get depleted in the process before the 
+# ScriptMemLimit is reached, then memory swapping begins, and it can slow down
+# the node to the point of freezing or even crashing.
 #
 # The present script probes the node for system information to compute 
 # the approximate available theoretical average memory per AMP on the node.
@@ -43,8 +44,8 @@
 # - Comparison to ScriptMemLimit value and assessment
 #
 # How to run the present script:
-# The script can be executed in 2 modes. From the command line of a
-# Bash shell on a SQL Engine node of the target Vantage server, run:
+# The script can be executed in 2 modes. From the command line of a Bash shell
+# on a SQL Engine node of the target Vantage server, run as root user:
 # 1)  # ./tdstoMemInspect.sh
 # or
 # 2)  # ./tdstoMemInspect.sh -s
@@ -58,10 +59,10 @@
 #
 # In mode (2), the script is executed with the option "-s", which
 # executes the script in simulation mode. In this mode, the user must
-# specify the following, in additino to the input of mode (1):
+# specify the following, in addition to the input of mode (1):
 # Additional input requested in simulation mode:
 # - Assumed number of AMPs on a node
-# - Assumed ScriptMemLimit value
+# - Assumed initial ScriptMemLimit value
 # - Assumed total memory on node
 # - Assumed FSG cache percentage value
 # In this manner, the user can simulate script responses for different
@@ -75,11 +76,17 @@
 # memory resources in conjunction to the SCRIPT TO at any given instance.
 #
 ###############################################################################
+# Release Changelog
+#
+# 2020-01-23   0.6   First public release
+# 2020-03-25   0.7   Clarity increse in results messaging
+#
+###############################################################################
 
 # Script version
 ver=0
-subver=6
-scrdate="2020-01-23"
+subver=7
+scrdate="2020-03-25"
 #
 # Some parameters
 #
@@ -273,7 +280,7 @@ memNeededMB=$( echo "scale=2; $nConcurr * $scrMemLimMB * $nAmps" | bc )
 memNeededGB=$( echo "scale=2; $memNeededMB / 1024." | bc )
 memNeededPerAmpMB=$( echo "scale=2; $memNeededMB / $nAmps" | bc )
 memNeededPerAmpGB=$( echo "scale=2; $memNeededGB / $nAmps" | bc )
-echo -e "    SCRIPT allowed up to:\t\t$scrMemLimMB MB \t( $scrMemLimGB GB )" 
+echo -e "    SCRIPT is currently allowed up to:\t$scrMemLimMB MB \t( $scrMemLimGB GB )" 
 
 echo ""
 
@@ -312,7 +319,7 @@ else
     echo "        No higher than about $( echo "$scriptMemLimBytesSugBytes / 1" | bc) bytes ( $memAvailPerAmpPerQueryMB MB )"
   # C. 1 GB < NeededMem
   else
-    echo "The ScriptMemLimit parameter can be safely increased to this value."
+    echo "The ScriptMemLimit parameter can be safely specified up to this value."
     echo "Re-check your system, if the concurrency settings are modified."
     echo "Always exercise caution and monitor nodes memory closely when using SCRIPT."
     echo "    Suggested ScriptMemLimit value:"
