@@ -9,10 +9,10 @@
 #
 # R And Python Analytics with the SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - May 2020
+# Alexander Kolovos - October 2020
 #
 # tdstoMemInspect: SCRIPT and ExecR Table Operators (TOs) memory inspection
-# Script version: 0.8 - 2020-05-20
+# Script version: 0.9 - 2020-10-14
 #
 # Bash script to probe a Vantage SQL Engine node for
 # 1. the existing upper memory threshold settings for the SCRIPT and ExecR TOs,
@@ -87,19 +87,23 @@
 ###############################################################################
 # Release Changelog
 #
-# 2020-01-23   0.6   First public release
-# 2020-03-25   0.7   Clarity increse in results messaging
+# 2020-10-14   0.9   Fix: Collecting system info on a system with more than one
+#                         type of FSG cache (such as FSG and TIM FSG) led to 
+#                         erratic FSG Cache reporting. Now script only reads
+#                         and reports FSG cache value.
 # 2020-05-19   0.8   Include ExecR mempry parameter in output. Improve clarity.
 #                    Implement stricter verdict for nodes with inadequate mem.
 #                    Fixed bug that allowed for negative free memory. Fixed
 #                    script behavior to account for scenario when PDE is down.
+# 2020-03-25   0.7   Clarity increse in results messaging
+# 2020-01-23   0.6   First public release
 #
 ###############################################################################
 
 # Script version
 ver=0
-subver=8
-scrdate="2020-05-20"
+subver=9
+scrdate="2020-10-14"
 #
 # Some parameters
 #
@@ -264,7 +268,7 @@ else
   # Collect system info: Use call to ctl to get output with FSG cache info.
   ctl <<< 'scr dbs' > tmp1
   # Get output line with FSG cache info from ctl
-  grep "FSG cache Percent" tmp1 > tmp2
+  grep ") FSG cache Percent" tmp1 > tmp2
   # Get FSG cache percentage value (last argument in line)
   fsgVal=$(cat tmp2 | awk '{print $NF}')
 
