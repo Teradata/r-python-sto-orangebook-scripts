@@ -2,12 +2,12 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2020 by Teradata
+# Copyright (c) 2021 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - February 2020 - v.2.0
+# Alexander Kolovos - August 2021 - v.2.1
 #
 # Example 1: Scoring (Python version)
 # File     : ex1pFit.py
@@ -16,7 +16,7 @@
 #
 # Fit a Ranfom Forests model to a given dataset. Export model information
 # to a Python model object to score data in a target SQL Engine database.
-# Use case: 
+# Use case:
 # Predict the propensity of a financial services customer base
 # to open a credit card account.
 #
@@ -25,7 +25,7 @@
 # where the present script and the data file with the fitting data reside.
 # Execute this script in advance of using the scoring script "ex1pSco.py"
 # in the database.
-# 
+#
 # Requires sklearn, pandas, numpy, pickle, and base64 add-on packages.
 #
 # Required input:

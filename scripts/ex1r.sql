@@ -2,19 +2,19 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 1: Scoring (R version)
 -- File     : ex1r.sql
 --
 -- Score input rows from database by using model information from
 -- an existing R object.
--- Use case: 
+-- Use case:
 -- Predict the propensity of a financial services customer base
 -- to open a credit card account.
 --
@@ -68,11 +68,11 @@ CREATE MULTISET TABLE ex1rOutTbl AS (
 ) WITH DATA
 PRIMARY INDEX (Cust_ID);
 
--- Segment 2: Scoring with the model (script uses iterative data read)
+-- Segment 2: Scoring with the model (script uses non-iterative data read)
 --
 -- Install script. Adjust names and paths appropriately for your filesystem.
-CALL SYSUIF.REMOVE_FILE('ex1rScoIter',1);
-CALL SYSUIF.INSTALL_FILE('ex1rScoIter','ex1rScoIter.r','cz!/root/stoTests/ex1rScoIter.r');
+CALL SYSUIF.REMOVE_FILE('ex1rScoNonIter',1);
+CALL SYSUIF.INSTALL_FILE('ex1rScoNonIter','ex1rScoNonIter.r','cz!/root/stoTests/ex1rScoNonIter.r');
 
 -- Run script and save results into a table. Drop the table, if already exists.
 DROP TABLE ex1rOutTbl;
@@ -83,7 +83,7 @@ CREATE MULTISET TABLE ex1rOutTbl AS (
            oc3 AS Prob1,
            oc4 AS Actual
     FROM SCRIPT( ON (SELECT * FROM ex1tblSco)
-                 SCRIPT_COMMAND('Rscript --vanilla ./myDB/ex1rScoIter.r')
+                 SCRIPT_COMMAND('Rscript --vanilla ./myDB/ex1rScoNonIter.r')
                  RETURNS ('oc1 INTEGER, oc2 FLOAT, oc3 FLOAT, oc4 INTEGER')
                ) AS D
 ) WITH DATA
@@ -94,4 +94,3 @@ SELECT COUNT(Cust_ID) AS NObs,
        HASHAMP(HASHBUCKET(HASHROW(Cust_ID))) AS HAmp
 FROM ex1tblSco
 GROUP BY 2;
-

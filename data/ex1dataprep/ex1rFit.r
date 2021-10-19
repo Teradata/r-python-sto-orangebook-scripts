@@ -2,12 +2,12 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2020 by Teradata
+# Copyright (c) 2021 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - February 2020 - v.2.0
+# Alexander Kolovos - August 2021 - v.2.1
 #
 # Example 1: Scoring (R version)
 # File     : ex1rFit.r
@@ -25,7 +25,7 @@
 # where the present script and the data file with the fitting data reside.
 # Execute this script in advance of using the scoring script "ex1rSco.r"
 # in the database.
-# 
+#
 # Requires the randomForest add-on package.
 #
 # Required input:
@@ -46,7 +46,7 @@ cv <- c("numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
         "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
         "numeric", "numeric", "numeric", "numeric", "numeric", "numeric",
         "numeric", "numeric", "numeric", "numeric")
-trainDataDF <- try( read.table("ex1dataFit.csv", sep=",", flush=TRUE, 
+trainDataDF <- try( read.table("ex1dataFit.csv", sep=",", flush=TRUE,
                     header=TRUE, quote="", na.strings="", colClasses=cv) )
 
 # Change the class of the dependent variable to a factor to indicate to

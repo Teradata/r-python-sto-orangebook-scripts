@@ -2,12 +2,12 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 4: System-Wide Parallelism (Python version)
 -- File     : ex4p.sql
@@ -57,9 +57,9 @@ CALL SYSUIF.INSTALL_FILE('ex4pGlb','ex4pGlb.py','cz!/root/stoTests/ex4pGlb.py');
 --'cz!/root/stoTests/ex4rGlb.r');
 
 -- The following query is a nested call to the SCRIPT TO. Call the STO twice:
--- The inner call uses Python script to compute the avegage revenue for each 
+-- The inner call uses Python script to compute the avegage revenue for each
 --                Department across stores.
--- The outer call uses Python script to compute the average revenue across 
+-- The outer call uses Python script to compute the average revenue across
 --                all Departments and stores.
 SELECT CompanyID,
        AllDepts AS Tot_Depts,
@@ -75,17 +75,17 @@ FROM SCRIPT(ON (SELECT CompanyID,
                                        Revenue AS Rev_Dept
                                 FROM ex4tbl)
                             PARTITION BY Department
-                            SCRIPT_COMMAND ('python3 ./myDB/ex4pLoc.py')
+                            SCRIPT_COMMAND ('tdpython3 ./myDB/ex4pLoc.py')
                             RETURNS ('CompanyID INTEGER, DepartmentID INTEGER, Department VARCHAR(25), AvgRev_Dept FLOAT, N_Stores INTEGER')
                            ) )
             HASH BY CompanyID
-            SCRIPT_COMMAND ('python3 ./myDB/ex4pGlb.py')
+            SCRIPT_COMMAND ('tdpython3 ./myDB/ex4pGlb.py')
             RETURNS ('CompanyID INTEGER, AllDepts INTEGER, Avg_Dept_Revenue FLOAT')
            );
 
 -- The following query is a stand-alone version of the inner SCRIPT call.
 -- Returns the average revenue per department category across all stores
--- (last column) where each department category is present. 
+-- (last column) where each department category is present.
 SELECT CompanyID,
        DepartmentID,
        Department,
@@ -97,7 +97,6 @@ FROM SCRIPT(ON (SELECT CompanyID,
                        Revenue AS Rev_Dept
                 FROM ex4tbl)
             PARTITION BY Department
-            SCRIPT_COMMAND ('python3 ./myDB/ex4pLoc.py')
+            SCRIPT_COMMAND ('tdpython3 ./myDB/ex4pLoc.py')
             RETURNS ('CompanyID INTEGER, DepartmentID INTEGER, Department VARCHAR(25), AvgRev_Dept FLOAT, N_Stores INTEGER')
            );
-

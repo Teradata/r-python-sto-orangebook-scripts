@@ -2,12 +2,12 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 4: System-Wide Parallelism (R version)
 -- File     : ex4r.sql
@@ -55,9 +55,9 @@ CALL SYSUIF.REMOVE_FILE('ex4rGlb',1);
 CALL SYSUIF.INSTALL_FILE('ex4rGlb','ex4rGlb.r','cz!/root/stoTests/ex4rGlb.r');
 
 -- The following query is a nested call to the SCRIPT TO. Call the STO twice:
--- The inner call uses Python script to compute the avegage revenue for each 
+-- The inner call uses Python script to compute the avegage revenue for each
 --                Department across stores.
--- The outer call uses Python script to compute the average revenue across 
+-- The outer call uses Python script to compute the average revenue across
 --                all Departments and stores.
 SELECT CompanyID,
        AllDepts AS Tot_Depts,
@@ -98,4 +98,3 @@ FROM SCRIPT(ON (SELECT CompanyID,
             SCRIPT_COMMAND ('Rscript --vanilla ./myDB/ex4rLoc.r')
             RETURNS ('CompanyID INTEGER, DepartmentID INTEGER, Department VARCHAR(25), AvgRev_Dept FLOAT, N_Stores INTEGER')
            );
-

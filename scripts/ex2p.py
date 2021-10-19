@@ -2,44 +2,44 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2020 by Teradata
+# Copyright (c) 2021 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - February 2020 - v.2.0
+# Alexander Kolovos - October 2021 - v.2.1
 #
 # Example 2: Clustering (Python version)
 # File     : ex2p.py
 #
 # Use case:
-# Based on Pycluster Workshop example in "Data Analysis with Open Source Tools" 
+# Based on Pycluster Workshop example in "Data Analysis with Open Source Tools"
 # by Philipp K. Janert. Copyright 2011 Philipp K. Janert, 978-0-596-80235-6
 # Identify a user-specified number of clusters in given data set of points at
 # given locations. Classify each observation of the data set into a cluster,
 # on the basis of the observation coordinates.
 #
 # Script accounts for the general scenario that an AMP might have no data.
-# 
+#
 # Requires numpy, sys and scikit-learn packages.
 #
 # Data Input:
 # - ex2tbl table data from file "ex2data.csv". Contains the variables:
 #   ObsID     : The unique ID of each observation
-#   X_Coord   : The x coordinate of the observation 
-#   Y_Coord   : The y coordinate of the observation 
+#   X_Coord   : The x coordinate of the observation
+#   Y_Coord   : The y coordinate of the observation
 #   ObsGroup  : Integer that identifies which group the obs belongs to
 #
 # Input Parameter:
 # - n         : The number of clusters we want to create (default: n=5)
-# 
+#
 # Output:
 # - X_Centroid: The cluster centroid x coordinate
 # - Y_Centroid: The cluster centroid y coordinate
 # - isil      : Silhouette coef for each obs (in [-1,1]). Clustering good if =0
 # - silhCoef  : Average silhouette coefficient for data set
-# 
-# Note: In the presence of multiple groups of data in the same data set, 
+#
+# Note: In the presence of multiple groups of data in the same data set,
 #       meaningful cluster analysis on Teradata with the present script can be
 #       performed only by operating on same-group observations.
 #       For efficient analysis, ensure that each instance of the present script
@@ -64,15 +64,15 @@ else:
 
 DELIMITER = '\t'
 
-# Know your data: You must know in advance the number and data types of the 
-# incoming columns from the SQL Engine database! 
+# Know your data: You must know in advance the number and data types of the
+# incoming columns from the SQL Engine database!
 # For this script, the input expected format is:
 # 0: ObsID, 1: X coordinate, 2: Y coordinate, 3: ObsGroup
 colNames = ['ObsID', 'x_coord', 'y_coord', 'ObsGroup']
 # Of the above input columns, ObsID and ObsGroup are integers, and the
 # coordinates are float variables.
 # If any numbers are streamed in scientific format that contains blanks i
-# (such as "1 E002" for 100), the following Lambda functions remove blanks 
+# (such as "1 E002" for 100), the following Lambda functions remove blanks
 # from the input string so that Python interprets the number correctly.
 sciStrToFloat = lambda x: float("".join(x.split()))
 sciStrToInt = lambda x: int(float("".join(x.split())))

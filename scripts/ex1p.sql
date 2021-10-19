@@ -2,19 +2,19 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 1: Scoring (Python version)
 -- File     : ex1p.sql
 --
 -- Score input rows from database by using model information from
 -- an existing Python object.
--- Use case: 
+-- Use case:
 -- Predict the propensity of a financial services customer base
 -- to open a credit card account.
 --
@@ -61,17 +61,17 @@ CREATE MULTISET TABLE ex1pOutTbl AS (
            oc3 AS Prob1,
            oc4 AS Actual
     FROM SCRIPT( ON (SELECT * FROM ex1tblSco)
-                 SCRIPT_COMMAND('python3 ./myDB/ex1pSco.py')
+                 SCRIPT_COMMAND('tdpython3 ./myDB/ex1pSco.py')
                  RETURNS ('oc1 INTEGER, oc2 FLOAT, oc3 FLOAT, oc4 INTEGER')
                ) AS D
 ) WITH DATA
 PRIMARY INDEX (Cust_ID);
 
--- Segment 2: Scoring with the model (script uses iterative data read)
+-- Segment 2: Scoring with the model (script uses non-iterative data read)
 --
 -- Install script. Adjust names and paths appropriately for your filesystem.
-CALL SYSUIF.REMOVE_FILE('ex1pScoIter',1);
-CALL SYSUIF.INSTALL_FILE('ex1pScoIter','ex1pScoIter.py','cz!/root/stoTests/ex1pScoIter.py');
+CALL SYSUIF.REMOVE_FILE('ex1pScoNonIter',1);
+CALL SYSUIF.INSTALL_FILE('ex1pScoNonIter','ex1pScoNonIter.py','cz!/root/stoTests/ex1pScoNonIter.py');
 
 -- Run script and save results into a table. Drop the table, if already exists.
 DROP TABLE ex1pOutTbl;
@@ -82,7 +82,7 @@ CREATE MULTISET TABLE ex1pOutTbl AS (
            oc3 AS Prob1,
            oc4 AS Actual
     FROM SCRIPT( ON (SELECT * FROM ex1tblSco)
-                 SCRIPT_COMMAND('python3 ./myDB/ex1pScoIter.py')
+                 SCRIPT_COMMAND('tdpython3 ./myDB/ex1pScoNonIter.py')
                  RETURNS ('oc1 INTEGER, oc2 FLOAT, oc3 FLOAT, oc4 INTEGER')
                ) AS D
 ) WITH DATA
@@ -93,4 +93,3 @@ SELECT COUNT(Cust_ID) AS NObs,
        HASHAMP(HASHBUCKET(HASHROW(Cust_ID))) AS HAmp
 FROM ex1tblSco
 GROUP BY 2;
-

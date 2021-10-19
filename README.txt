@@ -1,6 +1,6 @@
 R And Python Analytics with SCRIPT Table Operator
 Orange Book supplementary material
-Alexander Kolovos - February 2020 - v.2.0
+Alexander Kolovos - October 2021 - v.2.1
 
 -------------------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ About
 The contents of this file are Teradata Public Content
 and have been released to the Public Domain.
 Licensed under BSD; see "license.txt" file for more information.
-Copyright (c) 2020 by Teradata
+Copyright (c) 2021 by Teradata
 
 -------------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ The present package is a collection of data, SQL, R and Python scripts to use
 with the Orange Book "R And Python Analytics with SCRIPT Table Operator".
 The data and scripts implement the examples presented in this Orange Book.
 The material provided has been based on research done on Vantage SQL Engine
-Version 16.20 systems installed on the SUSE Linux Enterprise Server 12 Service 
+Version 16.20 systems installed on the SUSE Linux Enterprise Server 12 Service
 Pack 3 (SLES12-SP3) operating system.
 
 The package also includes the Bash shell script "tdstoMemInspect.sh". This is a
@@ -48,15 +48,15 @@ Example 1:
 ex1dataFit.csv          Input data for model-fitting scripts (for client)
 ex1dataSco.csv          Input data for scoring scripts (6,000 records)
 ex1dataSco.fastload     Teradata FastLoad script to upload the example data
-ex1pFit.py              Python model fitting script (for client) 
+ex1pFit.py              Python model fitting script (for client)
 ex1pMod.out             Python object file with scoring model
-ex1pSco.py              Python scoring script
-ex1pScoIter.py          Python scoring script with iterative data read
+ex1pSco.py              Python scoring script with iterative data read
+ex1pScoNonIter.py       Python scoring script with non-iterative data read
 ex1p.sql                SQL statements to run the Python scoring script
 ex1rFit.r               R model fitting script (for client)
 ex1rMod.rds             R object file with scoring model
-ex1rSco.r               R scoring script
-ex1rScoIter.r           R scoring script with iterative data read
+ex1rSco.r               R scoring script with iterative data read
+ex1rScoNonIter.r        R scoring script with non-iterative data read
 ex1r.sql                SQL statements to run the R scoring script
 
 Example 2:
@@ -76,12 +76,12 @@ ex3dataFit.fastload     Teradata FastLoad script to upload fitting data
 ex3dataSco.csv          Data subset for scoring (100,000 records)
 ex3dataSco.fastload     Teradata FastLoad script to upload scoring data
 ex3pFit.py              Python script for the example logistic regression fit
-ex3pSco.py              Python scoring script
-ex3pScoIter.py          Python scoring script with iterative data read
+ex3pSco.py              Python scoring script with iterative data read
+ex3pScoNonIter.py       Python scoring script with non-iterative data read
 ex3p.sql                SQL statements to run all Python scripts in example
 ex3rFit.r               R script for the example logistic regression fit
-ex3rSco.r               R scoring script
-ex3rScoIter.r           R scoring script with iterative data read
+ex3rSco.r               R scoring script with iterative data read
+ex3rScoNonIter.r        R scoring script with non-iterative data read
 ex3r.sql                SQL statements to run all R scripts in example
 ex3dataMiniFit.csv      Smaller data subset for model fitting (3,000 records)
 ex3dataMiniFit.fastload Teradata FastLoad script to upload fitting data
@@ -111,6 +111,11 @@ ex5r.sql                SQL statements to run the example R script
 
 Changelog
 
+Version 2.1: (19 Oct 2021)
+* Accounts for Teradata In-nodes Python packages rel. >= 0.5.5 by calling the
+  corresponding interpreter via the command "tdpython3".
+* Iterative data reading algorithms are now the default recommended ones.
+
 Version 2.0: (20 Jan 2020)
 * Transitioned Python code from Python 2 into Python 3
 * Now using Fastload scripts and CSV data files throughout to load example
@@ -139,4 +144,3 @@ Version 1.1: (16 Apr 2015)
 
 Version 1.0: (31 Mar 2015)
 * Initial version.
-

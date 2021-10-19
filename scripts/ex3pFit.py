@@ -2,20 +2,20 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2020 by Teradata
+# Copyright (c) 2021 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - February 2020 - v.2.0
+# Alexander Kolovos - October 2021 - v.2.1
 #
 # Example 3: Multiple Models Fitting and Scoring: Fitting module (Python vers.)
 # File     : ex3pFit.py
-# 
+#
 # Use case:
 # Using simulated data for a retail store:
 # Model fitting step ("ex3pFit.py"): Fit a model to each one of specified
-#   product IDs, each featuring 5 dependent variables x1,...,x5. Return the 
+#   product IDs, each featuring 5 dependent variables x1,...,x5. Return the
 #   model information back to Vantage, and store it in a table.
 # Model scoring step ("ex3pSco.py"): Score a set of records for each one
 #   of the product IDs.
@@ -27,12 +27,12 @@
 #   thus operating simultaneously on mutiple product IDs.
 #
 # Script accounts for the general scenario that an AMP might have no data.
-# 
+#
 # Requires numpy, pandas, statsmodels, pickle, and base64 add-on packages.
 #
 # Required input:
 # - ex3tblFit table data from file "ex3dataFit.csv" for fitting step.
-# 
+#
 # Output:
 # - p_id        : Product ID
 # - modelSerB64 : Python model information in a pickled + serialized format
@@ -54,15 +54,15 @@ else:
 
 DELIMITER='\t'
 
-# Know your data: You must know in advance the number and data types of the 
-# incoming columns from the SQL Engine database! 
+# Know your data: You must know in advance the number and data types of the
+# incoming columns from the SQL Engine database!
 # For this script, the input expected format is:
 # 0: p_id, 1-5: indep vars, 6: dep var, 7: nRow, 8: model (if nRow==1), NULL o/w
 colNames = ['p_id','x1','x2','x3','x4','x5','y']
 
 # All input columns are float numbers.
 # If any numbers are streamed in scientific format that contains blanks i
-# (such as "1 E002" for 100), the following Lambda function removes blanks 
+# (such as "1 E002" for 100), the following Lambda function removes blanks
 # from the input string so that Python interprets the number correctly.
 sciStrToFloat = lambda x: float("".join(x.split()))
 # Use the Lambda function in the following converters for each input column.
@@ -84,13 +84,13 @@ if df.empty:
     sys.exit()
 
 # Create object with intercept and independent variables. The intercept column
-# must be present to use the object in the StatsModels GLM() in the following. 
+# must be present to use the object in the StatsModels GLM() in the following.
 dfx = df.loc[:,'x1':'x5']
 dfx.insert(0,'Intercept',1.0)
 # Create object with dependent variable
 dfy = df.loc[:,'y']
 # Use GLM in statsmodels for binomial general linear modeling.
-logit = sm.GLM(dfy, dfx, family = sm.families.Binomial()) 
+logit = sm.GLM(dfy, dfx, family = sm.families.Binomial())
 
 # Fit the model. Use disp=0 in the parenthesis to prevent sterr output.
 fitResult = logit.fit(disp=0)

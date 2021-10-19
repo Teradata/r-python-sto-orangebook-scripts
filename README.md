@@ -1,7 +1,7 @@
 ## R and Python Analytics with SCRIPT Table Operator
 ### Orange Book supplementary material
 
-A companion collection of R and Python for the Teradata Orange Book "**R and Python Analytics with SCRIPT Table Operator**". The current script bundle is v.2.0 in support of revision 4.1 of the Orange Book.
+A companion collection of R and Python for the Teradata Orange Book "**R and Python Analytics with SCRIPT Table Operator**". The current script bundle is v.2.1 in support of revision 4.3.2 or later of the Orange Book.
 
 ### R and Python In-nodes in Vantage
 
@@ -48,11 +48,11 @@ The present package comprises of the following folders and files. See the README
 * scripts/
     + ex1pMod.out
     + ex1pSco.py
-    + ex1pScoIter.py
+    + ex1pScoNonIter.py
     + ex1p.sql
     + ex1rMod.rds
     + ex1rSco.r
-    + ex1rScoIter.r
+    + ex1rScoNonIter.r
     + ex1r.sql
     + ex2p.py
     + ex2p.sql
@@ -60,11 +60,11 @@ The present package comprises of the following folders and files. See the README
     + ex2r.sql
     + ex3pFit.py
     + ex3pSco.py
-    + ex3pScoIter.py
+    + ex3pScoNonIter.py
     + ex3p.sql
     + ex3rFit.r
     + ex3rSco.r
-    + ex3rScoIter.r
+    + ex3rScoNonIter.r
     + ex3r.sql
     + ex4pGlb.py
     + ex4pLoc.py

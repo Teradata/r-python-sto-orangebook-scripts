@@ -2,12 +2,12 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 3: Multiple Models Fitting and Scoring (Python version)
 -- File     : ex3p.sql
@@ -15,7 +15,7 @@
 -- Use case:
 -- Using simulated data for a retail store:
 -- Model fitting step ("ex3pFit.py"): Fit a model to each one of specified
---   product IDs, each featuring 5 dependent variables x1,...,x5. Return the 
+--   product IDs, each featuring 5 dependent variables x1,...,x5. Return the
 --   model information back to Vantage, and store it in a table.
 -- Model scoring step ("ex3pSco.py"): Score a set of records for each one
 --   of the product IDs.
@@ -62,7 +62,7 @@ CREATE TABLE ex3modelPy AS (
            oc2 AS r_model
     FROM SCRIPT ( ON (SELECT * FROM ex3tblFit)
                   PARTITION BY p_id
-                  SCRIPT_COMMAND('python3 ./myDB/ex3pFit.py')
+                  SCRIPT_COMMAND('tdpython3 ./myDB/ex3pFit.py')
                   RETURNS ('oc1 INTEGER, oc2 CLOB')
                 ) AS d
 ) WITH DATA
@@ -96,17 +96,17 @@ CREATE MULTISET TABLE ex3pOutTbl AS (
                     WHERE s.p_id = m.p_id)
                  PARTITION BY s.p_id
                  ORDER BY nRow
-                 SCRIPT_COMMAND('python3 ./myDB/ex3pSco.py')
+                 SCRIPT_COMMAND('tdpython3 ./myDB/ex3pSco.py')
                  RETURNS ('oc1 INTEGER, oc2 FLOAT, oc3 FLOAT, oc4 FLOAT, oc5 FLOAT, oc6 FLOAT, oc7 FLOAT')
                ) AS d
 ) WITH DATA
 PRIMARY INDEX (p_id);
 
--- Segment 3: Scoring with models (script uses iterative data read)
+-- Segment 3: Scoring with models (script uses non-iterative data read)
 --
 -- Adjust names and path appropriately for your filesystem in the following.
-CALL SYSUIF.REMOVE_FILE('ex3pScoIter',1);
-CALL SYSUIF.INSTALL_FILE('ex3pScoIter','ex3pScoIter.py','cz!/root/stoTests/ex3pScoIter.py');
+CALL SYSUIF.REMOVE_FILE('ex3pScoNonIter',1);
+CALL SYSUIF.INSTALL_FILE('ex3pScoNonIter','ex3pScoNonIter.py','cz!/root/stoTests/ex3pScoNonIter.py');
 
 -- Run script and save results into a table. Drop the table, if already exists.
 DROP TABLE ex3pOutTbl;
@@ -130,7 +130,7 @@ CREATE MULTISET TABLE ex3pOutTbl AS (
                     WHERE s.p_id = m.p_id)
                  PARTITION BY s.p_id
                  ORDER BY nRow
-                 SCRIPT_COMMAND('python3 ./myDB/ex3pScoIter.py')
+                 SCRIPT_COMMAND('tdpython3 ./myDB/ex3pScoNonIter.py')
                  RETURNS ('oc1 INTEGER, oc2 FLOAT, oc3 FLOAT, oc4 FLOAT, oc5 FLOAT, oc6 FLOAT, oc7 FLOAT')
                ) AS d
 ) WITH DATA

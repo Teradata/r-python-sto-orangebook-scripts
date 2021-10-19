@@ -2,37 +2,37 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2020 by Teradata
+# Copyright (c) 2021 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - February 2020 - v.2.0
+# Alexander Kolovos - October 2021 - v.2.1
 #
 # Example 5: Linear Regression with the CALCMATRIX table operator (R version)
 # File     : ex5r.r
-# 
+#
 # (Adapted from the Teradata Developer Exchange online example by Mike Watzke:
 #  http://developer.teradata.com/extensibility/articles/
 #  in-database-linear-regression-using-the-calcmatrix-table-operator)
-# 
+#
 # Use case:
 # A simple example of linear regression with one dependent and two independent
 # variables (univariate, multiple variable regression). For the regression
-# computations, we need to calculate the sums of squares and cross-products 
+# computations, we need to calculate the sums of squares and cross-products
 # matrix of the data. The example illustrates how to use the CALCMATRIX table
-# operator for this task. The script returns the estimates of the regression 
+# operator for this task. The script returns the estimates of the regression
 # coefficients.
-# 
+#
 # Script accounts for the general scenario that an AMP might have no data.
-# 
+#
 # Required input:
 # - ex5tbl table data from file "ex5dataTblDef.sql"
-# 
+#
 # Output:
 # - varName: Regression coefficient name
 # - B      : Regression coefficient estimated value
-# 
+#
 ################################################################################
 
 DELIMITER='\t'
@@ -44,7 +44,7 @@ inputDF <- data.frame();
 # Need to know in advance the type of all input columns. Cite them in following
 # vector to feed the colClasses argument of the read.table() function.
 cv <- c("numeric","character","numeric","numeric","numeric","numeric","numeric")
-inputDF <- try(read.table(stdin, sep=DELIMITER, flush=TRUE, header=FALSE, 
+inputDF <- try(read.table(stdin, sep=DELIMITER, flush=TRUE, header=FALSE,
                       quote="", na.strings="", colClasses=cv, strip.white=TRUE),
                silent=TRUE)
 
@@ -60,7 +60,7 @@ nObs <- nrow(inputDF)
 colnames(inputDF) <- c('rownum', 'rowname', 'c', 's', 'x1', 'x2', 'y')
 
 # Determine the position of the independent variable columns
-xcols <- which(!names(inputDF) %in% c('rownum','rowname','c','y'))  
+xcols <- which(!names(inputDF) %in% c('rownum','rowname','c','y'))
 # Extract partial X'X
 pXX <- inputDF[ inputDF[['rowname']] != 'y' , c(xcols)]
 # Extract observation count

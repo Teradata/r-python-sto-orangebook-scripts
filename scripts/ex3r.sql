@@ -2,12 +2,12 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 3: Multiple Models Fitting and Scoring (R version)
 -- File     : ex3r.sql
@@ -15,7 +15,7 @@
 -- Use case:
 -- Using simulated data for a retail store:
 -- Model fitting step ("ex3rFit.r"): Fit a model to each one of specified
---   product IDs, each featuring 5 dependent variables x1,...,x5. Return the 
+--   product IDs, each featuring 5 dependent variables x1,...,x5. Return the
 --   model information back to Vantage, and store it in a table.
 -- Model scoring step ("ex3rSco.r"): Score a set of records for each one
 --   of the product IDs.
@@ -83,16 +83,16 @@ DROP TABLE ex3rOutTbl;
 CREATE MULTISET TABLE ex3rOutTbl AS (
     SELECT oc1 AS p_id,
            oc2 AS Prediction,
-           oc3 AS x1, 
-           oc4 AS x2, 
-           oc5 AS x3, 
-           oc6 AS x4, 
+           oc3 AS x1,
+           oc4 AS x2,
+           oc5 AS x3,
+           oc6 AS x4,
            oc7 AS x5
     FROM SCRIPT( ON(SELECT s.*,
-                           CASE WHEN nRow=1 THEN m.r_model ELSE null END 
+                           CASE WHEN nRow=1 THEN m.r_model ELSE null END
                     FROM (SELECT x.*,
                                  row_number() OVER (PARTITION BY x.p_id ORDER BY x.p_id) AS nRow
-                          FROM ex3tblSco x) AS s, ex3modelR m 
+                          FROM ex3tblSco x) AS s, ex3modelR m
                     WHERE s.p_id = m.p_id)
                  PARTITION BY s.p_id
                  ORDER BY nRow
@@ -102,11 +102,11 @@ CREATE MULTISET TABLE ex3rOutTbl AS (
 ) WITH DATA
 PRIMARY INDEX (p_id);
 
--- Segment 3: Scoring with models (script uses iterative data read)
+-- Segment 3: Scoring with models (script uses non-iterative data read)
 --
 -- Adjust names and path appropriately for your filesystem in the following.
-CALL SYSUIF.REMOVE_FILE('ex3rScoIter',1);
-CALL SYSUIF.INSTALL_FILE('ex3rScoIter','ex3rScoIter.r','cz!/root/stoTests/ex3rScoIter.r');
+CALL SYSUIF.REMOVE_FILE('ex3rScoNonIter',1);
+CALL SYSUIF.INSTALL_FILE('ex3rScoNonIter','ex3rScoNonIter.r','cz!/root/stoTests/ex3rScoNonIter.r');
 
 -- Run script and save results into a table. Drop the table, if already exists.
 DROP TABLE ex3rOutTbl;
@@ -130,7 +130,7 @@ CREATE MULTISET TABLE ex3rOutTbl AS (
                     WHERE s.p_id = m.p_id)
                  PARTITION BY s.p_id
                  ORDER BY nRow
-                 SCRIPT_COMMAND('Rscript --vanilla ./myDB/ex3rScoIter.r')
+                 SCRIPT_COMMAND('Rscript --vanilla ./myDB/ex3rScoNonIter.r')
                  RETURNS ('oc1 INTEGER, oc2 FLOAT, oc3 FLOAT, oc4 FLOAT, oc5 FLOAT, oc6 FLOAT, oc7 FLOAT')
                ) AS d
 ) WITH DATA

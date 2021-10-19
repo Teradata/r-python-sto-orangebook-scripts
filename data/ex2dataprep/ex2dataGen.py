@@ -7,7 +7,7 @@
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - February 2020 - v.2.0
+# Alexander Kolovos - August 2021 - v.2.1
 #
 # Example 2: Clustering
 # File     : ex2dataGen.py

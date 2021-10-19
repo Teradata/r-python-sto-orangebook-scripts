@@ -2,18 +2,18 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 2: Clustering (R version)
 -- File     : ex2r.sql
 --
 -- Use case:
--- Based on Pycluster Workshop example in "Data Analysis with Open Source Tools 
+-- Based on Pycluster Workshop example in "Data Analysis with Open Source Tools
 -- by Philipp K. Janert. Copyright 2011 Philipp K. Janert, 978-0-596-80235-6
 -- Identify a user-specified number of clusters in given data set of points at
 -- given locations. Classify each observation of the data set into a cluster,
@@ -52,8 +52,8 @@ CALL SYSUIF.INSTALL_FILE('ex2r','ex2r.r','cz!/root/stoTests/ex2r.r');
 -- The following hashes the input table by the ObsGroup column to send obs
 -- of the same ObsGroup value to the same amp.
 -- The RETURNS clause specifies to divide the data into n clusters.
-SELECT oc2 AS ObsGrp, 
-       oc1 AS ObsID, 
+SELECT oc2 AS ObsGrp,
+       oc1 AS ObsID,
        oc3 AS ClustID,
        oc4 AS X_Centroid,
        oc5 AS Y_Centroid,
@@ -68,7 +68,7 @@ ORDER BY ObsGrp, ClustID
 WITH AVG(D.oc8) (TITLE 'Avg Silhouette Coefficient') BY ObsGrp;
 
 -- Utility to explore the hash map: Which values of the primary indexed column
--- go to which amp? For illustration, use the ObsID column sequence of values 
+-- go to which amp? For illustration, use the ObsID column sequence of values
 -- as input to HASH functions.
 SELECT DISTINCT ObsGroup,
        HASHAMP(HASHBUCKET(HASHROW(ObsGroup))) AS HAmp
@@ -79,4 +79,3 @@ ORDER BY 1;
 SELECT partition, COUNT(*)
 FROM ex2tbl
 GROUP BY 1 ORDER BY 1;
-

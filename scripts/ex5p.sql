@@ -2,12 +2,12 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2020 by Teradata
+-- Copyright (c) 2021 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - February 2020 - v.2.0
+-- Alexander Kolovos - October 2021 - v.2.1
 --
 -- Example 5: Linear Regression with the CALCMATRIX table operator (Python ver.)
 -- File: ex5p.sql
@@ -19,11 +19,11 @@
 -- Use case:
 -- A simple example of linear regression with one dependent and two independent
 -- variables (univariate, multiple variable regression). For the regression
--- computations, we need to calculate the sums of squares and cross-products 
+-- computations, we need to calculate the sums of squares and cross-products
 -- matrix of the data. The example illustrates how to use the CALCMATRIX table
--- operator for this task. The script returns the estimates of the regression 
+-- operator for this task. The script returns the estimates of the regression
 -- coefficients.
--- 
+--
 -- Required input:
 -- - "ex5p.py" Python script to install in database
 -- - ex5tbl table data from file "ex5dataTblDef.sql"
@@ -51,20 +51,19 @@ SET SESSION SEARCHUIFDBPATH = myDB;
 CALL SYSUIF.REMOVE_FILE('ex5p',1);
 CALL SYSUIF.INSTALL_FILE('ex5p','ex5p.py','cz!/root/stoTests/ex5p.py');
 
--- Use a Python script to perform linear regression on the data provided 
+-- Use a Python script to perform linear regression on the data provided
 -- in table ex5tbl. The needed sum of squares and cross products is computed
 -- by intermediately calling the CALCMATRIX table operator and asking for the
 -- 'ESSCP' calculation type.
-SELECT oc1 AS Coefficient, 
+SELECT oc1 AS Coefficient,
        oc2 AS cValue
-FROM SCRIPT( ON( SELECT * 
-                 FROM CALCMATRIX 
-                      (ON (SELECT SESSION AS ampkey, D1.* 
+FROM SCRIPT( ON( SELECT *
+                 FROM CALCMATRIX
+                      (ON (SELECT SESSION AS ampkey, D1.*
                            FROM CALCMATRIX (ON (SELECT * FROM ex5tbl)
                                             USING PHASE('LOCAL') ) AS D1 )
                        HASH BY ampkey
                        USING PHASE('COMBINE') CALCTYPE('ESSCP') ) AS D2 )
-             SCRIPT_COMMAND('python3 ./myDB/ex5p.py')
+             SCRIPT_COMMAND('tdpython3 ./myDB/ex5p.py')
              RETURNS ('oc1 VARCHAR(20), oc2 FLOAT')
            ) AS D;
-
