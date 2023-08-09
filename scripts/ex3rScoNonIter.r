@@ -2,12 +2,12 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2021 by Teradata
+# Copyright (c) 2023 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - October 2021 - v.2.1
+# Alexander Kolovos - July 2023 - v.2.5
 #
 # Example 3: Multiple Models Fitting and Scoring: Scoring module (R version)
 # File     : ex3rScoNonIter.r
@@ -122,7 +122,7 @@ glmModel <- unserialize(modelInSer)
 dt4 <- try(read.table(stdin, sep=DELIMITER, flush=TRUE, header=FALSE,
                       quote="", na.strings="", colClasses=cv),
                       silent=TRUE)
-if (class(dt4) == "try-error") {
+if (nrow(dt4) == 0 || class(dt4) == "try-error") {
     # Reached the end of the stream
     inputDF <- NULL
     quit()

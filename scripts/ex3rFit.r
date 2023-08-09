@@ -2,12 +2,12 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2021 by Teradata
+# Copyright (c) 2023 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - October 2021 - v.2.1
+# Alexander Kolovos - July 2023 - v.2.5
 #
 # Example 3: Multiple Models Fitting and Scoring: Fitting module (R version)
 # File     : ex3rFit.r
@@ -58,7 +58,7 @@ inputDF <- try(read.table(stdin, sep=DELIMITER, flush=TRUE, header=FALSE,
 close(stdin)
 
 # For AMPs that receive no data, exit the script instance gracefully
-if (class(inputDF) == "try-error") {
+if (nrow(inputDF) == 0 || class(inputDF) == "try-error") {
     inputDF <- NULL
     quit()
 }

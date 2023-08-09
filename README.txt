@@ -1,6 +1,6 @@
 R And Python Analytics with SCRIPT Table Operator
 Orange Book supplementary material
-Alexander Kolovos - October 2021 - v.2.1
+Alexander Kolovos - August 2023 - v.2.5
 
 -------------------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ About
 The contents of this file are Teradata Public Content
 and have been released to the Public Domain.
 Licensed under BSD; see "license.txt" file for more information.
-Copyright (c) 2021 by Teradata
+Copyright (c) 2023 by Teradata
 
 -------------------------------------------------------------------------------
 
@@ -18,20 +18,24 @@ Information
 The present package is a collection of data, SQL, R and Python scripts to use
 with the Orange Book "R And Python Analytics with SCRIPT Table Operator".
 The data and scripts implement the examples presented in this Orange Book.
-The material provided has been based on research done on Vantage SQL Engine
-Version 16.20 systems installed on the SUSE Linux Enterprise Server 12 Service
-Pack 3 (SLES12-SP3) operating system.
+The material provided has been based on research done on Vantage Analytics
+Database 17.20 installed on the SUSE Linux Enterprise Server 12 Service
+Pack 3 (SLES12-SP3) operating system.  All of the present material is designed
+for use with the SCRIPT Table Operator database object on Vantage Enterprise 
+and Vantage Core systems.
 
-The package also includes the Bash shell script "tdstoMemInspect.sh". This is a
-utility to probe a SQL Engine node for SCRIPT upper memory threshold based on
-a) the current ScriptMemLimit value on the SQL Engine, and
+The package also includes the Bash shell script "tdstoMemInspect.sh".  This is
+a utility to probe a Analytics Database node for SCRIPT upper memory threshold 
+based on
+a) the current ScriptMemLimit value on the Analytics Database, and
 b) memory availability on that node.
-This script should be executed on a SQL Engine node of a Vantage system by a
-user with administrative rights. See the script file for more details.
-The shell script file is located in the bin/ directory of this package.
+This script should be executed on a Analytics Database node of a Vantage 
+Enterprise of Vantage Core system by a user with administrative rights.  See 
+the script file for more details.  The shell script file is located in the bin/ 
+directory of this package.
 
 The following is a listing of all other data and script files included in the
-present package to reproduce the examples in the Orange Book. The listing
+present package to reproduce the examples in the Orange Book.  The listing
 cites the contents of this package according to the example they appear in the
 Orange Book.
 
@@ -39,7 +43,7 @@ All .csv files are text data files; they are located in the data/ directory.
 The data/ directory also contains a SQL file with the example 7 input table
 definition and data, and directories ex1dataprep/ and ex2dataprep/ with
 additional files that are needed if the user wishes to re-create selected
-data input used in Examples 1 and 2. See the Orange Book for more details.
+data input used in Examples 1 and 2.  See the Orange Book for more details.
 
 All other files are located in the scripts/ directory of this package.
 
@@ -110,6 +114,12 @@ ex5r.sql                SQL statements to run the example R script
 -------------------------------------------------------------------------------
 
 Changelog
+
+Version 2.5: (15 Jul 2023)
+* Tested with the Teradata In-nodes Python packages rel. >= 2.0.0.
+* Updated libraries versions were used to train the Python model ex1pMod.out in
+  scripts/ folder.  In particular, model has been created in data/ex1dataprep
+  with the script ex1pFit.py and scikit-learn==1.1.3 under Python 3.8.17.
 
 Version 2.1: (19 Oct 2021)
 * Accounts for Teradata In-nodes Python packages rel. >= 0.5.5 by calling the

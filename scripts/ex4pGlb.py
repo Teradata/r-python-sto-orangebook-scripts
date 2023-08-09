@@ -2,12 +2,12 @@
 # The contents of this file are Teradata Public Content
 # and have been released to the Public Domain.
 # Licensed under BSD; see "license.txt" file for more information.
-# Copyright (c) 2021 by Teradata
+# Copyright (c) 2023 by Teradata
 ################################################################################
 #
 # R And Python Analytics with SCRIPT Table Operator
 # Orange Book supplementary material
-# Alexander Kolovos - October 2021 - v.2.1
+# Alexander Kolovos - July 2023 - v.2.5
 #
 # Example 4: System-Wide Parallelism - Global Average module (Python version)
 # File     : ex4pGlb.py

@@ -2,12 +2,12 @@
 -- The contents of this file are Teradata Public Content
 -- and have been released to the Public Domain.
 -- Licensed under BSD; see "license.txt" file for more information.
--- Copyright (c) 2021 by Teradata
+-- Copyright (c) 2023 by Teradata
 --------------------------------------------------------------------------------
 --
 -- R And Python Analytics with SCRIPT Table Operator
 -- Orange Book supplementary material
--- Alexander Kolovos - October 2021 - v.2.1
+-- Alexander Kolovos - July 2023 - v.2.5
 --
 -- Example 1: Scoring (Python version)
 -- File     : ex1p.sql
@@ -46,7 +46,7 @@ SET SESSION SEARCHUIFDBPATH = myDB;
 CALL SYSUIF.REMOVE_FILE('ex1pMod',1);
 CALL SYSUIF.INSTALL_FILE('ex1pMod','ex1pMod.out','cb!/root/stoTests/ex1pMod.out');
 
--- Segment 1: Scoring with the model
+-- Scoring with the model
 --
 -- Install script. Adjust names and paths appropriately for your filesystem.
 CALL SYSUIF.REMOVE_FILE('ex1pSco',1);

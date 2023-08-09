@@ -1,19 +1,19 @@
 ## R and Python Analytics with SCRIPT Table Operator
 ### Orange Book supplementary material
 
-A companion collection of R and Python for the Teradata Orange Book "**R and Python Analytics with SCRIPT Table Operator**". The current script bundle is v.2.1 in support of revision 4.3.2 or later of the Orange Book.
+A companion collection of R and Python for the Teradata Orange Book "**R and Python Analytics with SCRIPT Table Operator**". The current script bundle is v.2.5 in support of revision 4.4.0 or later of the Orange Book.
 
 ### R and Python In-nodes in Vantage
 
-Since Teradata Database v.15.00, the SCRIPT Table Operator (STO) can be used to execute R and Python scripts natively in the database nodes.  A related Orange Book has been written as a guide to use data stored in the SQL Engine in analytics applications with R and Python through the STO.  This Orange Book provides
+Since Teradata Database v.15.00, the SCRIPT Table Operator (STO) can be used to execute R and Python scripts natively in the database nodes.  A related Orange Book has been written as a guide to use data stored in the Analytics Database in analytics applications with R and Python through the STO on Vantage Enterprise and Vantage Core systems.  This Orange Book provides
 
-* detailed steps about setting up R and Python on a Vantage system Advanced SQL Engine
+* detailed steps about setting up R and Python on a Vantage system Analytics Database
 * adding functionality to these languages by means of add-on library packages
 * selected examples that illustrate how to compose and execute R and Python scripts under the STO for common analytical tasks
-* best practices, tips and guidelines about executing R and Python scripts in Advanced SQL Engine nodes
-* best practices, tips and guidelines about preserving Advanced SQL Engine resources when using the SCRIPT and/or ExecR Table Operators
+* best practices, tips and guidelines about executing R and Python scripts in Analytics Database nodes
+* best practices, tips and guidelines about preserving Analytics Database resources when using the SCRIPT and/or ExecR Table Operators
 
-The present repo houses the R and Python scripts and corresponding data sets for the Orange Book examples. Simply download the material and use it against a target Advanced SQL Engine.  Details about script installation and usage are available in the Orange Book.
+The present repo houses the R and Python scripts and corresponding data sets for the Orange Book examples. Simply download the material and use it against a target Analytics Database on a Vantage Enterprise or Vantage Core system.  Details about script installation and usage are available in the Orange Book.
 
 ### Table of Contents
 
